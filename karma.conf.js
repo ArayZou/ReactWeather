@@ -8,11 +8,15 @@ module.exports = function (config) {
     frameworks: ['jasmine'],
     files: [
       'test/helpers/**/*.js',
-      'test/spec/components/**/*.js'
+      'test/spec/components/**/*.js',
+      'test/spec/stores/**/*.js',
+      'test/spec/actions/**/*.js'
     ],
     preprocessors: {
       'test/spec/components/**/*.js': ['webpack'],
-      'test/spec/components/**/*.jsx': ['webpack']
+      'test/spec/components/**/*.jsx': ['webpack'],
+      'test/spec/stores/**/*.js': ['webpack'],
+      'test/spec/actions/**/*.js': ['webpack']
     },
     webpack: {
       cache: true,
@@ -30,7 +34,7 @@ module.exports = function (config) {
           test: /\.(js|jsx)$/,
           loader: 'babel-loader'
         }, {
-          test: /\.sass/,
+          test: /\.scss/,
           loader: 'style-loader!css-loader!sass-loader?outputStyle=expanded'
         }, {
           test: /\.css$/,
@@ -46,7 +50,9 @@ module.exports = function (config) {
       resolve: {
         alias: {
           'styles': path.join(process.cwd(), './src/styles/'),
-          'components': path.join(process.cwd(), './src/components/')
+          'components': path.join(process.cwd(), './src/components/'),
+          'stores': '../../../src/stores/',
+          'actions': '../../../src/actions/'
         }
       }
     },
