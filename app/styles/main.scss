@@ -1,91 +1,514 @@
-$icon-font-path: "../fonts/";
+@import
+  // Ionicons
+  "../assets/ionic_scss/ionicons/ionicons.scss",
 
-@import "bootstrap-sass-official/assets/stylesheets/bootstrap";
+    // Variables
+  "../assets/ionic_scss/mixins",
+  "../assets/ionic_scss/variables",
 
-.browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
+    // Base
+  "../assets/ionic_scss/reset",
+  "../assets/ionic_scss/scaffolding",
+  "../assets/ionic_scss/type",
+
+    // Components
+  "../assets/ionic_scss/action-sheet",
+  "../assets/ionic_scss/backdrop",
+  "../assets/ionic_scss/bar",
+  "../assets/ionic_scss/tabs",
+  "../assets/ionic_scss/menu",
+  "../assets/ionic_scss/modal",
+  "../assets/ionic_scss/popover",
+  "../assets/ionic_scss/popup",
+  "../assets/ionic_scss/loading",
+  "../assets/ionic_scss/items",
+  "../assets/ionic_scss/list",
+  "../assets/ionic_scss/badge",
+  "../assets/ionic_scss/slide-box",
+  "../assets/ionic_scss/refresher",
+  "../assets/ionic_scss/spinner",
+
+    // Forms
+  "../assets/ionic_scss/form",
+  "../assets/ionic_scss/checkbox",
+  "../assets/ionic_scss/toggle",
+  "../assets/ionic_scss/radio",
+  "../assets/ionic_scss/range",
+  "../assets/ionic_scss/select",
+  "../assets/ionic_scss/progress",
+
+    // Buttons
+  "../assets/ionic_scss/button",
+  "../assets/ionic_scss/button-bar",
+
+    // Util
+  "../assets/ionic_scss/grid",
+  "../assets/ionic_scss/util",
+  "../assets/ionic_scss/platform",
+
+    // Animations
+  "../assets/ionic_scss/animations",
+  "../assets/ionic_scss/transitions";
+
+@import
+  // WeatherIcons
+  "weather-icons.min";
+
+$defaultbackgroud : #1F8A70;
+
+html,body,.wrap,.weather_wrap{
+  width:100%;
+  height: 100%;
+  color: #fff;
 }
-
-/* Space out content a bit */
-body {
-    padding-top: 20px;
-    padding-bottom: 20px;
+.wrap{
+  overflow: hidden;
 }
-
-/* Everything but the jumbotron gets side spacing for mobile first views */
-.header,
-.marketing,
-.footer {
-    padding-left: 15px;
-    padding-right: 15px;
-}
-
-/* Custom page header */
-.header {
-    border-bottom: 1px solid #e5e5e5;
-
-    /* Make the masthead heading the same height as the navigation */
-    h3 {
-        margin-top: 0;
-        margin-bottom: 0;
-        line-height: 40px;
-        padding-bottom: 19px;
+// loading
+.loading{
+  background:#202020;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  z-index: 9999;
+  .spinner{
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    color: #f00;
+    -webkit-animation: color-bubble 2s linear 0s infinite;
+    animation: color-bubble 2s linear 0s infinite;
+    &:after, &:before{
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      border-radius: 100%;
+      box-shadow: 0 0 0 3px;
+      -webkit-animation: spinner-bubble 1.3s linear 0s infinite;
+      animation: spinner-bubble 1.3s linear 0s infinite;
+      margin: auto;
+      width: 10px;
+      height: 10px;
+      opacity: 0;
     }
+    &:before{
+      -webkit-animation: spinner-bubble 1.3s linear 2s infinite;
+      animation: spinner-bubble 1.3s linear 2s infinite;
+    }
+  }
+}
+@-webkit-keyframes spinner-bubble {
+  from {
+    width: 10px;
+    height: 10px;
+    opacity: .8;
+  }
+  to {
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+@keyframes spinner-bubble {
+  from {
+    width: 10px;
+    height: 10px;
+    opacity: .8;
+  }
+  to {
+    width: 50px;
+    height: 50px;
+    opacity: 0;
+  }
+}
+@-webkit-keyframes color-bubble {
+  0% {
+    color: #009DDC;
+  }
+  33% {
+    color: #50B949;
+  }
+  66% {
+    color: #EE2D24;
+  }
+  100% {
+    color: #FEB825;
+  }
+}
+@keyframes color-bubble {
+  0% {
+    color: #009DDC;
+  }
+  33% {
+    color: #50B949;
+  }
+  66% {
+    color: #EE2D24;
+  }
+  100% {
+    color: #FEB825;
+  }
 }
 
-/* Custom page footer */
-.footer {
-    padding-top: 19px;
-    color: #777;
-    border-top: 1px solid #e5e5e5;
-}
-
-.container-narrow > hr {
-    margin: 30px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
+.install_wrap{
+  background: #68BB77;
+  height: 100%;
+  width: 100%;
+  .install_intro{
     text-align: center;
-    border-bottom: 1px solid #e5e5e5;
-    .btn {
-        font-size: 21px;
-        padding: 14px 24px;
+    .intro_text{
+      width: 80%;
+      margin: 0 auto 30px;
+      padding: 80px 0 0;
     }
+    .button{
+      margin:0 auto;
+    }
+  }
 }
 
-/* Supporting marketing content */
-.marketing {
-    margin: 40px 0;
-    p + h4 {
-        margin-top: 28px;
-    }
+.iosheader{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background: $defaultbackgroud;
+  z-index: 99999;
+}
+.iosdevice{
+  padding-top:20px;
+  .snap-drawers{
+    top:20px;
+
+  }
+}
+// 主体内容
+.weather_wrap{
+  -webkit-transition: all 0.2s linear;
+  position: relative;
+  z-index: 10;
+  background: $defaultbackgroud;
+  padding:0 0 30px;
+  h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+    color: #fff;
+  }
+  .item{
+    color: #fff;
+    border-color: #fff;
+    background-color: $defaultbackgroud;
+    border-right: 0;
+  }
+}
+.weather_main{
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  margin:0;
+  padding:0;
+}
+.weather_content{
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
 }
 
-/* Responsive: Portrait tablets and up */
-@media screen and (min-width: 768px) {
-    .container {
-        max-width: 730px;
-    }
+.pullrefresh{
+  height:80px;
+  text-align: center;
+  line-height: 80px;
+  margin-top:-80px;
+}
+.pullrefresh.showrefresh{
+  margin-top:0;
+}
+// header bar
+.weather_header{
+  position: relative;
+  background: $defaultbackgroud;
+  .button.button-light.button-outline{
+    border-color: #fff;
+    color: #fff;
+  }
+}
+.bar .leftslider_btn{
+  font-size: 24px;
+}
 
-    /* Remove the padding we set earlier */
-    .header,
-    .marketing,
-    .footer {
-        padding-left: 0;
-        padding-right: 0;
+// 当前天气
+.current_weather{
+  text-align: center;
+  margin-bottom: 30px;
+  .current_info{
+    .current_wi{
+      font-size: 80px;
+      padding:30px 0 20px;
     }
+    .current_infoline{
+      font-size: 22px;
+      margin:0;
+      .current_des{
+        padding:0 20px 0 0;
+      }
+      .current_temp{
+        .wi{
+          font-size: 20px;
+        }
+      }
+    }
+  }
+  .current_maxminline,
+  .current_wind,
+  .current_moreline,
+  .current_suntime{
+    line-height: 30px;
+    font-size: 18px;
+  }
+  .current_maxminline{
+    .ion-ios-arrow-thin-down,
+    .ion-ios-arrow-thin-up{
+      font-size: 20px;
+      color: #fff;
+      padding:0 3px;
+    }
+    .wi{
+      font-size: 20px;
+    }
+  }
+  .current_windinfo{
+    line-height: 24px;
+    font-size: 12px;
+  }
+}
 
-    /* Space out the masthead */
-    .header {
-        margin-bottom: 30px;
+//3小时预报
+.per3hour_body{
+  margin-bottom: 30px;
+  h2{
+    height: 28px;
+    line-height: 28px;
+    font-size: 16px;
+    font-weight: normal;
+    border-bottom: 1px solid #fff;
+    padding:0 0 0 15px;
+    color: #fff;
+    span{
+      color: #fff;
+      font-size: 12px;
     }
+  }
+  .per3hourwrapper {
+    position: relative;
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+  }
+  .per3hourwrapper .per3hourscroller {
+    position: absolute;
+    z-index: 1;
+    width: 1000px;
+    height: 100%;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    -o-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  .per3hourwrapper .per3hourlist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+  }
+  .per3hourwrapper .per3hourlist li {
+    display: block;
+    float: left;
+    width: 50px;
+    height: 100%;
+    font-size: 12px;
+  }
+  .per3hourwrapper .per3hourlist li .large-wi {
+    font-size: 20px;
+  }
+  .per3hourwrapper .per3hourlist li .wi-degrees{
+    font-size: 16px;
+  }
+}
 
-    /* Remove the bottom border on the jumbotron for visual effect */
-    .jumbotron {
-        border-bottom: 0;
+.perday_body{
+  padding:0 0 30px;
+  h2{
+    height: 28px;
+    line-height: 28px;
+    font-size: 16px;
+    font-weight: normal;
+    border-bottom: 1px solid #fff;
+    padding:0 0 0 15px;
+    color: #fff;
+    span{
+      color: #fff;
+      font-size: 12px;
     }
+  }
+  .chart_xlabels{
+    color: #fff;
+    text-align: center;
+  }
+  .perday_list{
+    .list_weather{
+      text-align: center;
+    }
+    .list_temp{
+      text-align: right;
+    }
+  }
+}
+
+//leftslider
+.leftslider_wrap{
+  width: 266px;
+  position: absolute;
+  left:0;
+  top: 0;
+  height:100%;
+  background: #202020;
+  z-index: 1;
+  color: #fff;
+  .leftslider_list{
+    background: #202020;
+    .item{
+      height:52px;
+      background: #202020;
+      border-color: #000;
+      color: #fff;
+      text-decoration: none;
+    }
+    .position_item{
+      padding:0;
+      .link{
+        float: left;
+        padding: 16px;
+        width: 200px;
+        color:#fff;
+        text-decoration: none;
+      }
+      .delete{
+        background: rgba(0,0,0,0.3);
+        float: right;
+        height:52px;
+        line-height: 52px;
+        font-size: 28px;
+        color: red;
+        width: 66px;
+        text-align: center;
+      }
+    }
+  }
+  .bottom_editor{
+    position:absolute;
+    bottom:10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+  }
+}
+// mask
+.view_mask{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 9999;
+  .mask_loadding{
+    position: absolute;
+    color: #fff;
+    left: 50%;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    margin: -25px 0 0 -25px;
+    background: rgba(0,0,0,0.5);
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    i{
+      display: inline-block;
+      font-size: 32px;
+      -webkit-animation: maskloadding 1.2s linear infinite;
+      animation: maskloadding 1.2s linear infinite;
+      position: relative;
+      width: 50px;
+      height: 50px;
+      &:before{
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+      }
+    }
+  }
+  .addpositon_form{
+    background: #fff;
+    width: 80%;
+    border-radius: 8px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    padding:20px;
+    .form_title{
+      color: #333;
+      height: 30px;
+      line-height: 30px;
+      margin-bottom: 10px;
+    }
+    .form_content{
+      .form_input{
+        border:1px solid #ccc;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes maskloadding {
+  0%{
+    -webkit-transform: rotate(0deg);
+  }
+  50%{
+    -webkit-transform: rotate(180deg);
+  }
+  100%{
+    -webkit-transform: rotate(360deg);
+  }
+}
+@keyframes maskloadding {
+  0%{
+    transform: rotate(0deg);
+  }
+  50%{
+    transform: rotate(180deg);
+  }
+  100%{
+    transform: rotate(360deg);
+  }
 }
