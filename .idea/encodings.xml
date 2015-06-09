@@ -6,6 +6,7 @@
     <file url="file://$PROJECT_DIR$/app/scripts/app.coffee" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/scripts/app.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/scripts/ui/Timer.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/scripts/ui/WeatherWrap.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/styles/main.scss" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bower.json" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gulpfile.js" charset="UTF-8" />

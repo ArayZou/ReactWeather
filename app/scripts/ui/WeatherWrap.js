@@ -1,6 +1,6 @@
 React = require("react");
 
-Timer = React.createClass({
+WeatherWrap = React.createClass({
   getInitialState: function() {
     return {
       secondsElapsed: 0
@@ -18,8 +18,8 @@ Timer = React.createClass({
     clearInterval(this.interval);
   },
   render: function() {
-    return React.DOM.div({}, ['Seconds Elapsed: ' + this.state.secondsElapsed]);
+    return <div className="wrap">Seconds Elapsed: {this.state.secondsElapsed}</div>;
   }
 });
 
-module.exports = Timer;
+module.exports = WeatherWrap;
