@@ -149,62 +149,6 @@ Wrap = React.createClass({
           }
         }
 
-        var chartdata = {
-          chart: {
-            type: 'line',
-            spacingLeft: 0,
-            spacingRight: 0,
-            spacingTop: 0,
-            spacingBottom: 0,
-            backgroundColor: '#1F8A70',
-            borderColor: '#fff'
-          },
-          title: null,
-          subtitle: null,
-          xAxis: {
-            categories: dateArray,
-            labels: {
-              useHTML: true
-            },
-            lineColor: '#fff'
-          },
-          yAxis: {
-            showEmpty: true,
-            labels: {
-              enabled: false
-            },
-            title: {
-              text: null
-            },
-            lineColor: '#fff'
-          },
-          plotOptions: {
-            line: {
-              dataLabels: {
-                enabled: true
-              },
-              enableMouseTracking: false
-            }
-          },
-          series: [{
-            name: 'max',
-            data: maxArray,
-            color:'#fff',
-            dataLabels: {
-              enabled: true,
-              color: '#fff'
-            }
-          }, {
-            name: 'min',
-            data: minArray,
-            color:'#fff',
-            dataLabels: {
-              enabled: true,
-              color: '#fff'
-            }
-          }]
-        };
-        //$scope.basicAreaChart = chartdata;
         self.forecastByDay = forecastByDay;
         self.forecastByDayPart1 = forecastByDayPart1;
         self.forecastByDayPart2 = forecastByDayPart2;
@@ -242,24 +186,30 @@ Wrap = React.createClass({
   },
   render: function() {
     var loadingHtml;
-    if(this.state.showloading){
-      loadingHtml = <div className="loading"><div className="spinner"></div></div>;
-    }else{
-      loadingHtml = null;
-    }
+    loadingHtml = this.state.showloading?<div className="loading"><div className="spinner"></div></div>:null;
+    var wrapHtml = <div className="wrap">
+      {loadingHtml}
+      <div className="leftslider_wrap">
+        <div className="leftslider">
+          <p className="bottom_editor">作者:ArayZou<br/>你若安好，便是晴天<br/>项目源码：github.com/ArayZou/ArayDeWeather</p>
+        </div>
+      </div>
+      <div className="weather_wrap">
+        <div className="weather_content">
+          <div className="pullrefresh">下拉刷新</div>
+          <div className="weather_header bar bar-header">
+            <a className="leftslider_btn icon ion-navicon button button-outline button-light"></a>
+            <h1 className="title">城市</h1>
+            <a className="button button-clear button-light icon ion-ios-plus-outline"></a>
+          </div>
+        </div>
+      </div>
+    </div>;
     if(this.state.installed){
       return (
         <div className="wrap">
           <div className="iosheader"></div>
-          <div className="wrap">
-            {loadingHtml}
-            <div className="leftslider_wrap">
-              <div className="leftslider">
-                <p className="bottom_editor">作者:ArayZou<br/>你若安好，便是晴天<br/>项目源码：github.com/ArayZou/ArayDeWeather</p>
-              </div>
-            </div>
-            <div className="weather_wrap"></div>
-          </div>
+          {wrapHtml}
         </div>
       )
     }else if(this.state.webapp) {
@@ -267,13 +217,7 @@ Wrap = React.createClass({
       console.log('渲染:'+x);
       return (
         <div className="wrap">
-          {loadingHtml}
-          <div className="leftslider_wrap">
-            <div className="leftslider">
-              <p className="bottom_editor">作者:ArayZou<br/>你若安好，便是晴天<br/>项目源码：github.com/ArayZou/ArayDeWeather</p>
-            </div>
-          </div>
-          <div className="weather_wrap"></div>
+          {wrapHtml}
         </div>
       )
     }else{
