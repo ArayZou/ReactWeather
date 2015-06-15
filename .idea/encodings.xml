@@ -5,6 +5,7 @@
     <file url="file://$PROJECT_DIR$/.gitignore" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/scripts/app.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/scripts/common/weatherIcon.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/scripts/ui/LeftSnap.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/scripts/ui/WeatherWrap.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/app/styles/main.scss" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/bower.json" charset="UTF-8" />

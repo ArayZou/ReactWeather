@@ -6,6 +6,9 @@ WeatherIcon = require("./common/weatherIcon.js");
 WeatherWindDeg = require("./common/weatherWindDeg.js");
 WeatherWindLevel = require("./common/weatherWindLevel.js");
 
+WeatherWrap = require("./ui/WeatherWrap.js");
+LeftSnap = require("./ui/LeftSnap.js");
+
 Wrap = React.createClass({
   getInitialState: function() {
     var installed = navigator.standalone;
@@ -34,7 +37,7 @@ Wrap = React.createClass({
   },
   getLocation: function(){
     if (window.navigator.geolocation) {
-      console.log('geolocation');
+      //console.log('geolocation');
       window.navigator.geolocation.getCurrentPosition(this.showPosition);
     } else{
       console.log('geolocation error');
@@ -45,8 +48,8 @@ Wrap = React.createClass({
       lon = position.coords.longitude;
     this.lat = lat;
     this.lon = lon;
-    console.log('lat:'+lat);
-    console.log('lon:'+lon);
+    //console.log('lat:'+lat);
+    //console.log('lon:'+lon);
     //地理数据
     this.httpCurrentPosition(lat,lon);
     this.httpCurrentWeather(lat,lon);
@@ -57,7 +60,7 @@ Wrap = React.createClass({
   httpCurrentPosition: function(lat,lon){
     var self = this;
     $.getJSON('http://api.map.baidu.com/geocoder/v2/?ak=izzcWKDNO77b3VodC1ipezPh&callback=?&location='+lat+','+lon+'&output=json&pois=1',function(location){
-      console.log(location);
+      //console.log(location);
       self.location = location.result;
       self.currentPositionName = location.result.addressComponent.city;
     });
@@ -69,7 +72,7 @@ Wrap = React.createClass({
       url: 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&lang=zh_cn&APPID=ed158d368307ef2644fe349ffa6a50d4'
     }).success(function(weather){
       if(weather.cod===200){
-        console.log(weather);
+        //console.log(weather);
         //计算风向
         weather.wind.deg = WeatherWindDeg(weather.wind.deg);
         //计算风力
@@ -104,7 +107,7 @@ Wrap = React.createClass({
           weather3Hour.list[i].weather[0].icon = WeatherIcon(weather3Hour.list[i].weather[0].id);
         }
 
-        console.log(weather3Hour);
+        //console.log(weather3Hour);
         self.weather3Hour = weather3Hour;
         self.weather3HourDateComplete = true;
         //数据处理完成
@@ -121,7 +124,7 @@ Wrap = React.createClass({
       url: 'http://api.openweathermap.org/data/2.5/forecast/daily?lat=' + lat + '&lon=' + lon + '&lang=zh_cn&cnt=16&mode=json&APPID=ed158d368307ef2644fe349ffa6a50d4'
     }).success(function (forecastByDay) {
       if (forecastByDay.cod === '200') {
-        console.log(forecastByDay);
+        //console.log(forecastByDay);
         var forecastByDay = forecastByDay,
           dateArray = [],
           maxArray = [],
@@ -185,26 +188,9 @@ Wrap = React.createClass({
     self.getLocation();
   },
   render: function() {
-    var loadingHtml;
-    loadingHtml = this.state.showloading?<div className="loading"><div className="spinner"></div></div>:null;
-    var wrapHtml = <div className="wrap">
-      {loadingHtml}
-      <div className="leftslider_wrap">
-        <div className="leftslider">
-          <p className="bottom_editor">作者:ArayZou<br/>你若安好，便是晴天<br/>项目源码：github.com/ArayZou/ArayDeWeather</p>
-        </div>
-      </div>
-      <div className="weather_wrap">
-        <div className="weather_content">
-          <div className="pullrefresh">下拉刷新</div>
-          <div className="weather_header bar bar-header">
-            <a className="leftslider_btn icon ion-navicon button button-outline button-light"></a>
-            <h1 className="title">城市</h1>
-            <a className="button button-clear button-light icon ion-ios-plus-outline"></a>
-          </div>
-        </div>
-      </div>
-    </div>;
+    var self = this,
+        loadingHtml = <div className="loading"><div className="spinner"></div></div>;
+    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<div className="wrap"><LeftSnap /><WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} /></div>;
     if(this.state.installed){
       return (
         <div className="wrap">
@@ -233,4 +219,4 @@ Wrap = React.createClass({
   }
 });
 
-React.render(React.createElement(Wrap), document.getElementById("wrap"));
+React.render(React.createElement(Wrap), document.body);
