@@ -7,7 +7,6 @@ WeatherWindDeg = require("./common/weatherWindDeg.js");
 WeatherWindLevel = require("./common/weatherWindLevel.js");
 
 WeatherWrap = require("./ui/WeatherWrap.js");
-LeftSnap = require("./ui/LeftSnap.js");
 
 Wrap = React.createClass({
   getInitialState: function() {
@@ -19,7 +18,8 @@ Wrap = React.createClass({
       showWeather : false,
       weatherDateComplete:false,
       weather3HourDateComplete:false,
-      forecastByDayDateComplete:false
+      forecastByDayDateComplete:false,
+      showAddPositionForm:false
     }
   },
   componentDidMount: function() {
@@ -71,7 +71,7 @@ Wrap = React.createClass({
     $.ajax({
       url: 'http://api.openweathermap.org/data/2.5/weather?lat='+lat+'&lon='+lon+'&lang=zh_cn&APPID=ed158d368307ef2644fe349ffa6a50d4'
     }).success(function(weather){
-      if(weather.cod===200){
+      if(weather && weather.cod && weather.cod===200){
         //console.log(weather);
         //计算风向
         weather.wind.deg = WeatherWindDeg(weather.wind.deg);
@@ -89,7 +89,7 @@ Wrap = React.createClass({
         self.checkDateComplete();
       }
     }).error(function(){
-      httpCurrentWeather(lat,lon)
+      self.httpCurrentWeather(lat,lon)
     });
   },
   //5天每3小时天气数据
@@ -98,7 +98,7 @@ Wrap = React.createClass({
     $.ajax({
       url: 'http://api.openweathermap.org/data/2.5/forecast?lat=' + lat + '&lon=' + lon + '&lang=zh_cn&APPID=ed158d368307ef2644fe349ffa6a50d4'
     }).success(function (weather3Hour) {
-      if (weather3Hour.cod === '200') {
+      if (weather3Hour && weather3Hour.cod && weather3Hour.cod === '200') {
         for (var i = 0; i < weather3Hour.list.length; i++) {
           var thisdate = weather3Hour.list[i].dt;
           weather3Hour.list[i].timedate = DateMoment.getDateDay(thisdate);
@@ -114,7 +114,7 @@ Wrap = React.createClass({
         self.checkDateComplete();
       }
     }).error(function () {
-      httpForecast3hour(lat,lon)
+      self.httpForecast3hour(lat,lon)
     });
   },
   //16天天气预报数据
@@ -123,13 +123,9 @@ Wrap = React.createClass({
     $.ajax({
       url: 'http://api.openweathermap.org/data/2.5/forecast/daily?lat=' + lat + '&lon=' + lon + '&lang=zh_cn&cnt=16&mode=json&APPID=ed158d368307ef2644fe349ffa6a50d4'
     }).success(function (forecastByDay) {
-      if (forecastByDay.cod === '200') {
+      if (forecastByDay && forecastByDay.cod && forecastByDay.cod === '200') {
         //console.log(forecastByDay);
-        var forecastByDay = forecastByDay,
-          dateArray = [],
-          maxArray = [],
-          minArray = [],
-          forecastByDayPart1 = [],
+        var forecastByDayPart1 = [],
           forecastByDayPart2 = [];
         for (var i = 0; i < 15; i++) {
           if (forecastByDay.list[i]) {
@@ -138,13 +134,6 @@ Wrap = React.createClass({
             forecastByDay.list[i].weekday = DateMoment.getWeekDay(thisdate);
             forecastByDay.list[i].weather[0].icon = WeatherIcon(forecastByDay.list[i].weather[0].id);
             if (i < 7) {
-              var dayDate = '<div class="chart_xlabels"><span>' + DateMoment.getDateDay(thisdate) + '</span><br>' +
-                '<span>周' + forecastByDay.list[i].weekday + '</span><br>' +
-                '<span class="wi ' + forecastByDay.list[i].weather[0].icon + '"></span><br>' +
-                '<span>' + forecastByDay.list[i].weather[0].description + '</span></div>';
-              dateArray.push(dayDate);
-              maxArray.push(parseInt(forecastByDay.list[i].temp.max - 273.15));
-              minArray.push(parseInt(forecastByDay.list[i].temp.min - 273.15));
               forecastByDayPart1.push(forecastByDay.list[i]);
             } else {
               forecastByDayPart2.push(forecastByDay.list[i]);
@@ -160,7 +149,7 @@ Wrap = React.createClass({
         self.checkDateComplete();
       }
     }).error(function () {
-      httpForecast16day(lat,lon);
+      self.httpForecast16day(lat,lon);
     });
   },
   // 检查参数完整显示页面
@@ -187,10 +176,18 @@ Wrap = React.createClass({
     });
     self.getLocation();
   },
+  showAddPositionFromFn: function(){
+    var self = this;
+    if(self.state.showAddPositionForm){
+
+    }else{
+
+    }
+  },
   render: function() {
     var self = this,
         loadingHtml = <div className="loading"><div className="spinner"></div></div>;
-    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<div className="wrap"><LeftSnap /><WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} /></div>;
+    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} />;
     if(this.state.installed){
       return (
         <div className="wrap">
