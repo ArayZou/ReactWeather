@@ -29,7 +29,7 @@ LocalStorage = {
           DeadTime: deadTime,
           SaveTime: saveDate
         };
-        $window.localStorage.setItem(storage, angular.toJson(data));
+        window.localStorage.setItem(storage, JSON.stringify(data));
       } else {
         console.log('时间格式错误');
       }
@@ -39,11 +39,11 @@ LocalStorage = {
         DeadTime: null,
         SaveTime: saveDate
       };
-      $window.localStorage.setItem(storage, angular.toJson(data));
+      window.localStorage.setItem(storage, JSON.stringify(data));
     }
   },
   GetLocalStorage: function (storage) {
-    var thisStorage = angular.fromJson($window.localStorage.getItem(storage));
+    var thisStorage = JSON.parse(window.localStorage.getItem(storage));
     if (thisStorage) {
       if(thisStorage.DeadTime){
         var date = new Date();
@@ -51,7 +51,7 @@ LocalStorage = {
         if (date < deadTime) {
           return thisStorage.Value;
         } else {
-          $window.localStorage.removeItem(storage);
+          window.localStorage.removeItem(storage);
         }
       }else{
         return thisStorage.Value;

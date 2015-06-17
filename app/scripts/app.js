@@ -7,6 +7,7 @@ WeatherWindDeg = require("./common/weatherWindDeg.js");
 WeatherWindLevel = require("./common/weatherWindLevel.js");
 
 WeatherWrap = require("./ui/WeatherWrap.js");
+AddPositionMask = require("./ui/AddPositionMask.js");
 
 Wrap = React.createClass({
   getInitialState: function() {
@@ -31,6 +32,7 @@ Wrap = React.createClass({
       });
       self.getLocation();
     }
+    self.getPositionArray();
   },
   componentWillUnmount: function() {
 
@@ -176,23 +178,65 @@ Wrap = React.createClass({
     });
     self.getLocation();
   },
+  getPositionArray: function(){
+    var self = this;
+    self.positionArray = [];
+    if(LocalStorage.GetLocalStorage('PositionList')){
+      self.positionArray = LocalStorage.GetLocalStorage('PositionList');
+    }
+  },
+  addPositionArray: function(positionName){
+    var self = this,
+        position = [];
+    if(LocalStorage.GetLocalStorage('PositionList')){
+      position = LocalStorage.GetLocalStorage('PositionList');
+    }
+    for(var i=0;i<position.length;i++){
+      if(positionName === position[i].name){
+        alert('位置名相同');
+        return false;
+      }
+    }
+    position.push({
+      lat: self.lat,
+      lon: self.lon,
+      name: positionName
+    });
+    LocalStorage.SetLocalStorage('PositionList',position);
+    self.positionArray = position;
+    self.setState({
+      showAddPositionForm: false
+    });
+  },
+  removePositionArray: function(positionName){
+    var self = this;
+    for(var i=0;i<self.positionArray.length;i++){
+      if(positionName == self.positionArray[i].name){
+        self.positionArray.splice(i,1);
+        LocalStorage.SetLocalStorage('PositionList',self.positionArray);
+        break;
+      }
+    }
+    self.forceUpdate();
+  },
   showAddPositionFromFn: function(){
     var self = this;
-    if(self.state.showAddPositionForm){
-
-    }else{
-
-    }
+    var ifShow = self.state.showAddPositionForm?false:true;
+    self.setState({
+      showAddPositionForm: ifShow
+    });
   },
   render: function() {
     var self = this,
         loadingHtml = <div className="loading"><div className="spinner"></div></div>;
-    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} />;
+    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} positionArray={self.positionArray} showAddPositionFromFn={self.showAddPositionFromFn} removePositionArray={self.removePositionArray} />;
+    var addpositionmaskHtml = self.state.showAddPositionForm?<AddPositionMask showAddPositionFromFn={self.showAddPositionFromFn} addPositionArray={self.addPositionArray} />:null;
     if(this.state.installed){
       return (
         <div className="wrap">
           <div className="iosheader"></div>
           {wrapHtml}
+          {addpositionmaskHtml}
         </div>
       )
     }else if(this.state.webapp) {
@@ -201,6 +245,7 @@ Wrap = React.createClass({
       return (
         <div className="wrap">
           {wrapHtml}
+          {addpositionmaskHtml}
         </div>
       )
     }else{
