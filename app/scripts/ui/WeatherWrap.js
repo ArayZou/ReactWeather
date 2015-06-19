@@ -5,6 +5,13 @@ Per3Hour = require("../ui/Per3Hour.js");
 PerDay = require("../ui/PerDay.js");
 
 WeatherWrap = React.createClass({
+  iscrollWrap:null,
+  ifRefresh:false,
+  getInitialState: function() {
+    return {
+      pullLength: 0
+    }
+  },
   componentDidMount: function() {
     var self = this;
     self.snapper = new Snap({
@@ -20,6 +27,21 @@ WeatherWrap = React.createClass({
       startY:0,
       deceleration:0.0005
     });
+    self.iscrollWrap.on('scrollEnd', function () {
+      if (self.ifRefresh && this.directionY === -1) {
+        self.props.resetPosition();
+      }
+    });
+    self.iscrollWrap.on('scroll',function () {
+      var that = this;
+      if(!self.ifRefresh && that.y>80){
+        self.ifRefresh = true;
+        that.deceleration = 0.005;
+      }
+      self.setState({
+        pullLength :that.y
+      });
+    });
   },
   openLeftSnap: function(){
     var self = this;
@@ -34,6 +56,11 @@ WeatherWrap = React.createClass({
     var self = this;
     self.snapper.close();
     self.props.showAddPositionFromFn();
+  },
+  positionJump: function(e){
+    var etarget = $(e.currentTarget);
+    this.props.resetPosition(etarget.attr('data-lat'),etarget.attr('data-lon'),etarget.attr('data-name'));
+    this.snapper.close();
   },
   deletePosition: function(e){
     var positionName = $(e.currentTarget).attr('data-name');
@@ -57,13 +84,13 @@ WeatherWrap = React.createClass({
               {positionList}
               <a href="javascript:;" className="item" onClick={this.showAddPositionFrom}>添加当前位置</a>
             </div>
-            <p className="bottom_editor">作者:ArayZou<br/>你若安好，便是晴天<br/>项目源码：github.com/ArayZou/ArayDeWeather</p>
+            <p className="bottom_editor">作者:ArayZou<br/>你若安好，便是晴天<br/>项目源码：github.com/ArayZou/ReactWeather</p>
           </div>
         </div>
         <div className="snap-content weather_wrap" ref="snapContent">
           <div className="weather_main" ref="iscrollWrap">
             <div className="weather_content">
-              <div className="pullrefresh">下拉刷新</div>
+              <div className="pullrefresh">{this.state.pullLength}下拉刷新</div>
               <div className="weather_header bar bar-header">
                 <a className="leftslider_btn icon ion-navicon button button-outline button-light" onClick={this.openLeftSnap}></a>
                 <h1 className="title">{this.props.currentPositionName}</h1>

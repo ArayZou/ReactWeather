@@ -58,6 +58,20 @@ Wrap = React.createClass({
     this.httpForecast3hour(lat,lon);
     this.httpForecast16day(lat,lon);
   },
+  resetPosition: function(lat,lon,name){
+    var self = this;
+    if(lat && lon){
+      this.lat = lat;
+      this.lon = lon;
+      self.currentPositionName = name;
+    }
+    self.weatherDateComplete = false;
+    self.weather3HourDateComplete = false;
+    self.forecastByDayDateComplete = false;
+    this.httpCurrentWeather(this.lat,this.lon);
+    this.httpForecast3hour(this.lat,this.lon);
+    this.httpForecast16day(this.lat,this.lon);
+  },
   //位置名
   httpCurrentPosition: function(lat,lon){
     var self = this;
@@ -166,7 +180,7 @@ Wrap = React.createClass({
         ifRefresh : false,
         showMaskLoadding : false
       });
-
+      self.forceUpdate();
       var x = new Date();
       console.log('加载完成:'+x);
     }
@@ -229,7 +243,7 @@ Wrap = React.createClass({
   render: function() {
     var self = this,
         loadingHtml = <div className="loading"><div className="spinner"></div></div>;
-    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} positionArray={self.positionArray} showAddPositionFromFn={self.showAddPositionFromFn} removePositionArray={self.removePositionArray} />;
+    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} positionArray={self.positionArray} showAddPositionFromFn={self.showAddPositionFromFn} removePositionArray={self.removePositionArray} resetPosition={self.resetPosition} />;
     var addpositionmaskHtml = self.state.showAddPositionForm?<AddPositionMask showAddPositionFromFn={self.showAddPositionFromFn} addPositionArray={self.addPositionArray} />:null;
     if(this.state.installed){
       return (
