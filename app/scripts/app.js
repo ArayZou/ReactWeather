@@ -243,7 +243,7 @@ Wrap = React.createClass({
   render: function() {
     var self = this,
         loadingHtml = <div className="loading"><div className="spinner"></div></div>;
-    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} positionArray={self.positionArray} showAddPositionFromFn={self.showAddPositionFromFn} removePositionArray={self.removePositionArray} resetPosition={self.resetPosition} />;
+    var wrapHtml = this.state.showloading?<div className="wrap">{loadingHtml}</div>:<WeatherWrap currentPositionName={self.currentPositionName} weather={self.weather} weather3Hour={self.weather3Hour} forecastByDayPart1={self.forecastByDayPart1} forecastByDayPart2={self.forecastByDayPart2} positionArray={self.positionArray} showAddPositionFromFn={self.showAddPositionFromFn} removePositionArray={self.removePositionArray} resetPosition={self.resetPosition} getLocation={self.getLocation} />;
     var addpositionmaskHtml = self.state.showAddPositionForm?<AddPositionMask showAddPositionFromFn={self.showAddPositionFromFn} addPositionArray={self.addPositionArray} />:null;
     if(this.state.installed){
       return (

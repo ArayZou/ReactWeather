@@ -52,6 +52,10 @@ WeatherWrap = React.createClass({
       self.snapper.close();
     }
   },
+  currentPositionFn: function(){
+    this.props.getLocation();
+    this.snapper.close();
+  },
   showAddPositionFrom:function(){
     var self = this;
     self.snapper.close();
@@ -80,7 +84,7 @@ WeatherWrap = React.createClass({
         <div className='snap-drawer snap-drawer-left leftslider_wrap'>
           <div className="leftslider">
             <div className="list leftslider_list">
-              <a href="javascript:;" className="item">当前位置</a>
+              <a href="javascript:;" className="item" onClick={this.currentPositionFn}>当前位置</a>
               {positionList}
               <a href="javascript:;" className="item" onClick={this.showAddPositionFrom}>添加当前位置</a>
             </div>
