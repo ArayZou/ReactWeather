@@ -6,16 +6,20 @@ LocalStorage = {
       var dateNum = time.substring(0, time.length - 1);
       if (/^[0-9]*$/.test(dateNum)) {
         switch (time.substr(-1)) {
-          case 'd' || 'D':
+          case 'd':
+          case 'D':
             deadTime = deadTime + dateNum * 24 * 60 * 60 * 1000;
             break;
-          case 'h' || 'H':
+          case 'h':
+          case 'H':
             deadTime = deadTime + dateNum * 60 * 60 * 1000;
             break;
-          case 'm' || 'M':
+          case 'm':
+          case 'M':
             deadTime = deadTime + dateNum * 60 * 1000;
             break;
-          case 's' || 'S':
+          case 's':
+          case 'S':
             deadTime = deadTime + dateNum * 1000;
             break;
           default:
